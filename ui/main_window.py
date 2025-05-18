@@ -1016,7 +1016,14 @@ class PuzzleSolverApp:
         start_time = time.time()
         try:
             # Chạy thuật toán
-            self.solution = algo_func(self.current_state, self.goal_state)
+            result = algo_func(self.current_state, self.goal_state)
+            # Kiểm tra nếu kết quả là tuple (như Q-Learning)
+            if isinstance(result, tuple) and len(result) == 2:
+                self.solution = result[0] # Gán solution path cho self.solution
+                self.episodes_run = result[1] # Lưu số episode
+            else:
+                self.solution = result # Gán kết quả trực tiếp nếu không phải tuple
+                self.episodes_run = None # Đảm bảo episodes_run là None cho các thuật toán khác
             # Tính thời gian thực thi
             self.execution_time = time.time() - start_time
             if self.solution:
@@ -1035,6 +1042,7 @@ class PuzzleSolverApp:
         self.execution_time = 0
         self.animation_start_time = None
         self.animation_elapsed_time = 0
+        self.episodes_run = None # Khởi tạo episodes_run
 
     def update_algorithm_buttons(self, selected_algo):
         """Cập nhật trạng thái các nút thuật toán"""

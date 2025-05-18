@@ -5,8 +5,24 @@ import random
 import numpy as np
 from models.puzzle_state import PuzzleState
 
-def q_learning(initial_state, goal_state, alpha=0.1, gamma=0.9, epsilon_start=0.1, epsilon_decay=0.99, epsilon_min=0.01):
-    """Q-Learning algorithm with parameterized alpha, gamma, and epsilon."""
+def q_learning(initial_state, goal_state, alpha=0.1, gamma=0.9, epsilon_start=0.1, epsilon_decay=0.99, epsilon_min=0.01, episodes=5000, max_steps=100):
+    """Q-Learning algorithm with parameterized alpha, gamma, and epsilon.
+
+    Args:
+        initial_state (list[list[int]]): The starting state of the puzzle.
+        goal_state (list[list[int]]): The target state of the puzzle.
+        alpha (float): Learning rate (default 0.1).
+        gamma (float): Discount factor (default 0.9).
+        epsilon_start (float): Initial exploration rate (default 0.1).
+        epsilon_decay (float): Decay rate for epsilon (default 0.99).
+        epsilon_min (float): Minimum exploration rate (default 0.01).
+        episodes (int): Number of training episodes (default 5000).
+        max_steps (int): Maximum steps per episode (default 100).
+
+    Returns:
+        tuple: A tuple containing the solution path (list of states) and the number of episodes run.
+               Returns (None, episodes_run) if no solution found in solving phase.
+    """
     q_table = {}
     actions = ['up', 'down', 'left', 'right']
 
@@ -56,14 +72,14 @@ def q_learning(initial_state, goal_state, alpha=0.1, gamma=0.9, epsilon_start=0.
         return state
 
     # Training phase
-    episodes = 5000
-    max_steps = 100
+    episodes_run = 0
 
     for episode in range(episodes):
+        episodes_run += 1
         state = [row[:] for row in initial_state]
         epsilon = max(epsilon_min, epsilon_start * (epsilon_decay ** episode))
 
-        for _ in range(max_steps):
+        for step in range(max_steps):
             action = get_action(state, epsilon)
             next_state = apply_action(state, action)
             reward = get_reward(next_state)
@@ -76,20 +92,40 @@ def q_learning(initial_state, goal_state, alpha=0.1, gamma=0.9, epsilon_start=0.
     state = [row[:] for row in initial_state]
     solution = [state]
     visited = set()
-    max_solve_steps = 100
+    max_solve_steps = 1000 # Increased max_solve_steps for better chance
 
     for _ in range(max_solve_steps):
         state_key = get_state_key(state)
         if state_key in visited:
+            # print("Solving phase: Visited state detected, stopping.") # Debug print
             break
         visited.add(state_key)
 
-        action = get_action(state, epsilon=0)  # always exploit
+        # Greedily choose the best action based on the learned Q-values
+        action = None
+        state_q_values = q_table.get(state_key, {a: 0.0 for a in actions})
+        if state_q_values:
+             action = max(state_q_values, key=state_q_values.get)
+
+        if action is None or state_q_values[action] == 0.0:
+            # print(f"Solving phase: No learned action or Q-value is 0 for state {state}, stopping.") # Debug print
+            break # Cannot proceed if no action is chosen or Q-value is zero
+
         next_state = apply_action(state, action)
+
+        # Check if the action actually changed the state (avoid getting stuck)
+        if next_state == state:
+             # print(f"Solving phase: Action '{action}' did not change state, stopping.") # Debug print
+             break
+
         solution.append(next_state)
+
         if next_state == goal_state:
-            break
+            # print("Solving phase: Goal state reached.") # Debug print
+            return solution, episodes_run # Return solution and episodes run
         state = next_state
 
-    return solution
+    # If solving phase finishes without reaching goal
+    # print("Solving phase: Max steps reached or stuck, returning current solution.") # Debug print
+    return None, episodes_run # Return None for solution if goal not reached, but return episodes run
 

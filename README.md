@@ -1,6 +1,6 @@
-# 🧩 Ứng dụng giải toán 8-Puzzle bằng các thuật toán Trí tuệ Nhân tạo
+# Ứng dụng giải toán 8-Puzzle bằng các thuật toán Trí tuệ Nhân tạo
 
-Chào mừng bạn đến với dự án "8-Puzzle Solver" - một ứng dụng trực quan hóa quá trình giải bài toán 8-Puzzle (Xếp hình 8 số) bằng nhiều thuật toán tìm kiếm khác nhau trong lĩnh vực Trí tuệ Nhân tạo.
+Dự án "8-Puzzle Solver" là một ứng dụng mô phỏng quá trình giải bài toán 8-Puzzle (Xếp hình 8 số) – một bài toán kinh điển trong lĩnh vực Trí tuệ Nhân tạo. Ứng dụng không chỉ đơn thuần tìm ra lời giải cho bài toán mà còn giúp người học và người dùng hiểu rõ hơn về cơ chế hoạt động của các thuật toán tìm kiếm thông qua hình ảnh minh họa, ma trận trạng thái, cây tìm kiếm, và thống kê hiệu suất.
 
 ## 1. Mục tiêu Dự án
 
@@ -23,7 +23,8 @@ Dự án bao gồm việc triển khai và trực quan hóa các nhóm thuật t
     *   **Trạng thái:** Ma trận 3x3 hiện tại của bảng Puzzle.
     *   **Hành động:** Các thao tác di chuyển ô trống: Lên (UP), Xuống (DOWN), Sang trái (LEFT), Sang phải (RIGHT). Các hành động chỉ hợp lệ nếu ô trống có thể di chuyển theo hướng đó.
     *   **Trạng thái ban đầu:** Cấu hình ban đầu của bảng Puzzle do người dùng nhập hoặc được đặt trước.
-    *   **Trạng thái đích:** Cấu hình mong muốn cuối cùng của bảng Puzzle (ví dụ: các số được sắp xếp theo thứ tự tăng dần).
+    *   **Trạng thái đích:** Cấu hình mong muốn cuối cùng của bảng Puzzle thường là trạng thái có các số từ 1 đến 8 sắp xếp tăng dần, với ô trống ở cuối.
+.
 *   **Lời giải:** Là một chuỗi các hành động hợp lệ liên tiếp, bắt đầu từ trạng thái ban đầu và dẫn đến trạng thái đích.
 
 ### 2.2. Các thuật toán Tìm kiếm không có thông tin (Uninformed Search)
@@ -43,7 +44,7 @@ Nhóm thuật toán này tìm kiếm lời giải mà không sử dụng bất k
     
     * DFS 
     
-    ![thuật toán DFS giải 8-Puzzle](gift/BFS.gif)
+    ![thuật toán DFS giải 8-Puzzle](gift/DFS.gif)
     
     * IDDFS 
     
@@ -58,7 +59,7 @@ Nhóm thuật toán này tìm kiếm lời giải mà không sử dụng bất k
 
     ![Biểu đồ so sánh thời gian và số bước của nhóm thuật toán Uninformed Search trong 8-Puzzle](gift/uninfo.png)
 
-*   **Nhận xét:** Các thuật toán tìm kiếm mù hoạt động tốt với không gian tìm kiếm nhỏ. BFS và IDDFS đảm bảo tìm thấy lời giải tối ưu (ít bước nhất), trong khi DFS có thể tìm thấy lời giải nhanh hơn nhưng không đảm bảo tối ưu. Tuy nhiên, với các bài toán phức tạp hơn hoặc độ sâu lời giải lớn, bộ nhớ và thời gian của BFS/UCS có thể trở thành vấn đề.
+*   **Nhận xét:** BFS, UCS và IDDFS đều giải được bài toán rất nhanh (≈ 0.0001 giây) và chỉ cần 2 bước để đạt trạng thái đích, chứng tỏ đây là những thuật toán tìm kiếm tối ưu và hiệu quả với không gian nhỏ. Trong khi đó, DFS (Standard) mất đến 1.5126 giây và phải duyệt qua 49,284 bước mới tìm được lời giải, cho thấy khả năng tìm kiếm không hiệu quả và không đảm bảo tối ưu. Điều này phản ánh đặc trưng của DFS là dễ rơi vào các nhánh sâu không cần thiết. Nhìn chung, BFS và IDDFS phù hợp để tìm lời giải ngắn và tối ưu nhưng có thể gặp giới hạn về bộ nhớ hoặc thời gian khi lời giải nằm sâu. DFS tiêu tốn ít bộ nhớ hơn nhưng không đảm bảo hiệu quả. UCS hoạt động giống BFS trong trường hợp chi phí đồng nhất và duy trì được sự tối ưu. Các thuật toán tìm kiếm mù chỉ phù hợp với không gian trạng thái nhỏ
 
 ### 2.3. Các thuật toán Tìm kiếm có thông tin (Informed Search)
 
@@ -87,7 +88,7 @@ Nhóm này sử dụng hàm heuristic (ước lượng chi phí từ trạng th�
     * Biểu đồ so sánh thời gian thực thi và số bước thực hiện của nhóm thuật toán Informed Search
 
     ![Biểu đồ so sánh thời gian và số bước của nhóm thuật toán Informed trong 8-Puzzle](gift/infor.png)
-*   **Nhận xét:** Với heuristic tốt (ví dụ: Manhattan distance, Hamming distance), các thuật toán tìm kiếm có thông tin thường vượt trội hơn tìm kiếm mù về hiệu quả thời gian và số node duyệt, đặc biệt trên không gian tìm kiếm lớn. A\* và IDA\* là các thuật toán tìm kiếm có thông tin phổ biến và mạnh mẽ.
+*   **Nhận xét:** Biểu đồ trên thể hiện so sánh giữa các thuật toán tìm kiếm có thông tin (A*, IDA*, GBFS) dựa trên thời gian thực thi và số bước của lời giải trong bài toán 8-Puzzle. Kết quả cho thấy cả ba thuật toán đều có thời gian xử lý rất nhanh (khoảng 0.0001 giây), cho thấy khả năng tìm kiếm hiệu quả nhờ sử dụng heuristic. Trong đó, A* và GBFS chỉ cần 2 bước để tìm ra lời giải, chứng tỏ khả năng tìm kiếm tối ưu hoặc gần tối ưu khi sử dụng hàm heuristic tốt. Ngược lại, IDA* mất đến 4 bước, dù thời gian vẫn nhanh, cho thấy có thể phải lặp lại nhiều lần để đạt độ sâu phù hợp. Nhìn chung, với heuristic thích hợp như Manhattan hay Hamming distance, các thuật toán tìm kiếm có thông tin hoạt động hiệu quả hơn đáng kể so với các thuật toán tìm kiếm mù cả về tốc độ lẫn chất lượng lời giải, đặc biệt khi mở rộng sang không gian tìm kiếm lớn hơn. Trong đó, A* được đánh giá là thuật toán mạnh mẽ nhất vì đảm bảo tìm lời giải tối ưu với chi phí thấp nhất.
 
 ### 2.4. Các thuật toán Tìm kiếm Cục bộ (Local Search)
 
@@ -111,7 +112,7 @@ Nhóm này bắt đầu từ một (hoặc nhiều) trạng thái hiện tại v
     
     * Simulateed Annealing 
     
-    ![thuật toán Annealing giải 8-Puzzle](gift/UCS.gif)
+    ![thuật toán Annealing giải 8-Puzzle](gift/Anealing.gif)
     
     * Beam Search 
     
@@ -123,7 +124,7 @@ Nhóm này bắt đầu từ một (hoặc nhiều) trạng thái hiện tại v
     ![Biểu đồ so sánh thời gian và số bước của nhóm thuật toán Local Search trong 8-Puzzle](gift/local.png)
 
 
-*   **Nhận xét:** Tìm kiếm cục bộ có ưu điểm về bộ nhớ. Hill Climbing có thể bị mắc kẹt tại cực tiểu cục bộ. Simulated Annealing và Stochastic Hill Climbing cố gắng thoát khỏi cực tiểu cục bộ bằng cách cho phép di chuyển "xấu" với xác suất nhất định. Beam Search giữ lại `k` trạng thái tốt nhất ở mỗi bước.
+*   **Nhận xét:** Biểu đồ trên thể hiện hiệu suất của các thuật toán tìm kiếm cục bộ gồm: Hill Climbing (Simple, Steepest, Stochastic), Simulated Annealing và Beam Search, thông qua hai tiêu chí: thời gian thực thi và số bước của lời giải. Các thuật toán Hill Climbing (cả ba biến thể) và Beam Search đều giải bài toán chỉ với 2 bước và thời gian thực thi rất nhanh (gần như tức thời). Điều này phản ánh khả năng hội tụ nhanh khi xuất phát từ trạng thái thuận lợi. Tuy nhiên, Simulated Annealing tốn nhiều thời gian hơn đáng kể (~0.01s) và không giải được bài toán trong trường hợp này (N/A), cho thấy tính ngẫu nhiên có thể khiến thuật toán chậm hoặc không tìm được lời giải. Nhìn chung, các thuật toán tìm kiếm cục bộ có ưu điểm là tiêu tốn ít bộ nhớ, hoạt động nhanh, nhưng dễ bị mắc kẹt tại cực tiểu cục bộ. Để khắc phục, các biến thể như Stochastic Hill Climbing hoặc Simulated Annealing chấp nhận di chuyển "xấu" với xác suất nhằm thoát bẫy cực trị. Beam Search cải thiện bằng cách giữ nhiều trạng thái tốt nhất ở mỗi bước, giúp tránh rơi vào đường cụt. Đây là lựa chọn phù hợp trong các bài toán có không gian trạng thái lớn nhưng hạn chế bộ nhớ.
 
 ### 2.5. Môi trường phức tạp (Complex Environment)
 
@@ -135,9 +136,19 @@ Bao gồm các bài toán hoặc thuật toán xử lý các môi trường khô
     *   **AND-OR Tree Visualization:** Hiển thị cấu trúc cây AND-OR được tạo ra trong quá trình tìm kiếm, giúp theo dõi quá trình phân rã bài toán thành các bài toán con AND (cần giải tất cả) và OR (chỉ cần giải một trong số đó).
     *   Visualization cho Partial Observation và Non-Observation (nếu có, mô tả cách biểu diễn tập hợp trạng thái tin tưởng).
 
-*   **Hình ảnh GIF / Video Demo:** (Visualization cây AND-OR, demo Partial/Non-Observation nếu có)
-
-*   **Nhận xét:** Các thuật toán này phù hợp với các bài toán có cấu trúc đặc biệt hoặc có thông tin không đầy đủ, đòi hỏi cách tiếp cận khác với tìm kiếm truyền thống.
+*   **Hình ảnh GIF:**
+    
+    * AND-OR 
+    
+    ![thuật toán And-or giải 8-Puzzle](gift/andor.gif)
+    
+    * Partial Observation 
+    
+    ![thuật toán Partial Observation giải 8-Puzzle](gift/Partial.gif)
+    
+    * Non-Observation 
+    
+    ![thuật toán Non-Observation giải 8-Puzzle](gift/NonObserve.gif)
 
 ### 2.6. Tìm kiếm Ràng buộc (Constraint Search)
 
@@ -157,13 +168,13 @@ Giải các bài toán bằng cách tìm kiếm một trạng thái thỏa mãn 
     
     * AC-3 
     
-    ![thuật toán AC-3 giải 8-Puzzle](gift/IDDFS.gif)
+    ![thuật toán AC-3 giải 8-Puzzle](gift/AC3.gif)
 
 *   **So sánh hiệu suất:**
     * Biểu đồ so sánh thời gian thực thi và số bước thực hiện của nhóm thuật toán Constraint Search
     
     ![Biểu đồ so sánh thời gian và số bước của nhóm thuật toán Constraint Search trong 8-Puzzle](gift/constrain.png)
-
+*   **Nhận xét:** Biểu đồ thể hiện sự so sánh giữa ba thuật toán giải bài toán ràng buộc (CSP) gồm Backtracking, Forward Checking và AC-3, dựa trên thời gian thực thi và số bước lời giải. Kết quả cho thấy Backtracking và Forward Checking có thời gian thực thi gần như nhau (~0.0003s) và cùng cần 30 bước để tìm ra lời giải. Trong khi đó, AC-3 có thời gian thực thi nhanh hơn đáng kể (~0.0000s) nhưng không có dữ liệu về số bước lời giải do đây là thuật toán kiểm tra ràng buộc, không trực tiếp đưa ra lời giải hoàn chỉnh. Nhìn chung, Backtracking là phương pháp cơ bản dễ bị rơi vào duyệt toàn bộ không gian tìm kiếm nếu không có kỹ thuật cắt tỉa, còn Forward Checking giúp cải thiện hiệu suất bằng cách kiểm tra trước miền giá trị có thể của biến kế tiếp. AC-3 lại có ưu điểm trong việc loại bỏ các giá trị không hợp lệ trước, làm giảm đáng kể không gian tìm kiếm. Do đó, trong thực tế, việc kết hợp AC-3 với các thuật toán như Backtracking hoặc Forward Checking sẽ giúp giải quyết các bài toán ràng buộc hiệu quả hơn.
 ### 2.7. Học tăng cường (Reinforcement Learning)
 
 Học cách hành động trong một môi trường để tối đa hóa phần thưởng tích lũy.
@@ -174,11 +185,14 @@ Học cách hành động trong một môi trường để tối đa hóa phần
     
     * Q-learning 
     
-    ![thuật toán Q-learning giải 8-Puzzle]()
+    ![thuật toán Q-learning giải 8-Puzzle](gift/Qlearning.gif)
 
-*   **So sánh hiệu suất:** (Bảng hoặc biểu đồ so sánh thời gian chạy, số bước, số node đã duyệt cho các bài toán mẫu)
+*   **So sánh hiệu suất:**
+    * Biểu đồ hiệu suất của Q-learning
+    
+    ![Biểu đồ hiệu suất của Q-learning trong 8-Puzzle](gift/Qlearning.png)
 
-*   **Nhận xét:** Q-Learning học giá trị hành động-trạng thái thông qua tương tác với môi trường. Cần thời gian huấn luyện nhưng có thể tìm ra các chiến lược hiệu quả.
+*   **Nhận xét:** Biểu đồ minh họa hiệu quả của thuật toán Q-Learning với các cấu hình khác nhau của hệ số học (α) và xác suất khai phá (ε). Các cấu hình với ε = 0.1 hoặc 0.3 đều cho kết quả tốt, với thời gian thực thi dao động từ 0.0216s đến 0.0244s và số bước giải là 2 sau 2000 tập huấn luyện (episodes). Ngược lại, các cấu hình có ε = 0.5 không thu được kết quả (N/A), cho thấy khi mức độ khai phá quá cao, thuật toán khó hội tụ về chính sách tối ưu. Điều này cho thấy Q-Learning cần được tinh chỉnh hợp lý giữa khai phá và khai thác để đảm bảo học hiệu quả. Dù mất thời gian huấn luyện, nhưng khi đã học xong, Q-Learning có thể đưa ra chiến lược tối ưu với hiệu suất cao và ổn định.
 
 ## 3. Kết luận
 
@@ -190,10 +204,16 @@ Dự án đã thành công trong việc xây dựng một công cụ mạnh mẽ
 *   Đặc biệt, việc phát triển visualization cho các thuật toán phức tạp (như cây AND-OR) mang lại cái nhìn sâu sắc về cơ chế hoạt động bên trong.
 *   Hệ thống lưu lịch sử giúp dễ dàng so sánh hiệu suất định lượng giữa các thuật toán.
 
-Thông qua dự án này, người dùng có thể trực tiếp trải nghiệm và đánh giá ưu nhược điểm của từng thuật toán AI trong việc giải quyết một bài toán cụ thể, từ đó củng cố kiến thức lý thuyết một cách sinh động.
+### Thuật toán nhanh nhất
+
+Trong số các thuật toán được triển khai, **A*** và **Greedy Best-First Search (GBFS)** là hai thuật toán nhanh nhất, với thời gian thực thi gần như tức thời (~0.0001 giây). Điều này đạt được nhờ việc sử dụng hàm heuristic để hướng dẫn quá trình tìm kiếm, giúp giảm đáng kể số lượng trạng thái cần duyệt. 
+
+* **A***: Đảm bảo tìm được lời giải tối ưu nhờ kết hợp chi phí từ gốc và chi phí ước lượng đến đích (`f(n) = g(n) + h(n)`).
+* **GBFS**: Tập trung vào việc mở rộng trạng thái "gần đích nhất" theo heuristic, tuy nhiên không đảm bảo tối ưu.
+
+Nhìn chung, **A*** là thuật toán mạnh mẽ nhất vì vừa nhanh vừa đảm bảo tìm được lời giải tối ưu, đặc biệt khi sử dụng heuristic tốt như Manhattan.
 
 ---
+[Trần Minh Quận] - MSSV: 23110295
 
-**Tác giả:** [Trần Minh Quận]
-**Ngày hoàn thành:** [18-05-2025]
-**Công nghệ sử dụng:** Python, Tkinter, ...
+
