@@ -1,11 +1,21 @@
 """
-Module chứa các thuật toán tiến hóa (Genetic Algorithm)
+Implementation of Genetic Algorithm for 8-puzzle problem
 """
 import random
 from models.puzzle_state import PuzzleState
 
 def genetic_algorithm(initial_state, goal_state):
-    """Genetic Algorithm"""
+    """
+    Genetic Algorithm implementation for solving 8-puzzle.
+    Uses population-based evolution with crossover and mutation operators.
+    
+    Args:
+        initial_state: Starting puzzle configuration
+        goal_state: Target puzzle configuration
+        
+    Returns:
+        List of states showing solution path if found, None otherwise
+    """
     def create_individual():
         numbers = list(range(9))
         random.shuffle(numbers)
