@@ -1,7 +1,11 @@
 """
 Module chứa các thuật toán tìm kiếm trong môi trường phức tạp
 """
+import time
+import logging
 from models.puzzle_state import PuzzleState
+
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def get_valid_moves(state):
     """Get all valid moves for a state"""
@@ -49,38 +53,118 @@ def apply_move(state, move_pos):
     new_state[old_x][old_y], new_state[new_x][new_y] = new_state[new_x][new_y], new_state[old_x][old_y]
     return new_state
 
+def get_move_direction(empty_pos, move_pos):
+    """Convert move position to direction string (UP/DOWN/LEFT/RIGHT)"""
+    dx = move_pos[0] - empty_pos[0]
+    dy = move_pos[1] - empty_pos[1]
+    if dx == -1:
+        return "UP"
+    elif dx == 1:
+        return "DOWN" 
+    elif dy == -1:
+        return "LEFT"
+    elif dy == 1:
+        return "RIGHT"
+    return None
+
 def and_or_search(initial_state, goal_state):
     """AND-OR Search algorithm"""
-    MAX_DEPTH = 30
+    MAX_DEPTH = 10  # Reduced depth limit for efficiency
     visited = set()
+    search_steps = []  # Store steps for visualization
+    nodes_explored = 0
+
+    def record_step(state, node_type, success=None, chosen_action=None, next_states=None):
+        nonlocal nodes_explored
+        nodes_explored += 1
+        step = {
+            'state': state,
+            'type': node_type,
+            'success': success,
+            'chosen_action': chosen_action,
+            'next_states': next_states or [],
+            'explanation': f"Exploring {node_type.upper()} node at depth {len(visited)}"
+        }
+        search_steps.append(step)
+        logging.debug(f"Recorded step: {step}")
+        return step
 
     def or_search(state, path, depth=0):
+        logging.debug(f"OR search at depth {depth} with state: {state}")
+        # Record OR node
+        step = record_step(state, 'or')
+        
         if state == goal_state:
+            step['success'] = True
+            step['explanation'] = "Found goal state"
             return []
+            
         if tuple(map(tuple, state)) in path or depth > MAX_DEPTH:
+            step['success'] = False
+            step['explanation'] = "Reached max depth or cycle detected"
             return None
+            
         visited.add(tuple(map(tuple, state)))
-        for move in get_valid_moves(state):
+        valid_moves = get_valid_moves(state)
+        
+        # Find empty position
+        empty_pos = None
+        for i in range(3):
+            for j in range(3):
+                if state[i][j] == 0:
+                    empty_pos = (i, j)
+                    break
+            if empty_pos:
+                break
+        
+        for move in valid_moves:
             next_state = apply_move(state, move)
             if next_state:
+                step['next_states'].append(next_state)
                 result = and_search([next_state], path + [tuple(map(tuple, state))], depth + 1)
                 if result is not None:
+                    step['success'] = True
+                    # Convert move position to direction
+                    step['chosen_action'] = get_move_direction(empty_pos, move)
+                    step['explanation'] = f"Found path through {step['chosen_action']} move"
                     return [next_state] + result
+                    
+        step['success'] = False
+        step['explanation'] = "No valid path found from this state"
         return None
 
-    def and_search(states, path, depth):
+    def and_search(states, path, depth=0):
+        logging.debug(f"AND search at depth {depth} with states: {states}")
+        # Record AND node
+        step = record_step(states[0], 'and') 
+        
         plan = []
         for state in states:
+            # Record next states before trying the move
+            step['next_states'].append(state)
+            
             subplan = or_search(state, path, depth)
             if subplan is None:
+                step['success'] = False
+                step['explanation'] = "One of the AND branches failed"
                 return None
             plan.extend(subplan)
+            
+        step['success'] = True
+        step['explanation'] = "All AND branches succeeded"
         return plan
 
+    start_time = time.time()
     plan = or_search(initial_state, [])
+    exec_time = time.time() - start_time
+    
+    result = None
     if plan:
-        return [initial_state] + plan
-    return None
+        result = [initial_state] + plan
+        
+    # Return tuple with all info
+    logging.debug(f"Final search steps: {search_steps}")
+    return search_steps, nodes_explored, None, None, {'steps': search_steps}
 
 def get_observation(state, observable_positions):
     """Get observation from state with observable positions"""

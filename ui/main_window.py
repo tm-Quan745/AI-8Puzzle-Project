@@ -884,7 +884,9 @@ class PuzzleSolverApp:
         from .andor_tree_visualizer import AndOrTreeVisualizer, build_andor_tree
         from algorithms.complex_search import and_or_search
         # Lấy trạng thái hiện tại và goal
-        initial_state = self.current_state
+        initial_state = [[1, 2, 3],
+        [4, 5, 6],
+        [7, 0, 8]]
         goal_state = self.goal_state
         # Gọi thuật toán and_or_search để lấy solution_path và tree_data
         result = and_or_search(initial_state, goal_state)

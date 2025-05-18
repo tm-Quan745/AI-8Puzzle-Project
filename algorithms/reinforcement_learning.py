@@ -5,15 +5,15 @@ import random
 import numpy as np
 from models.puzzle_state import PuzzleState
 
-def q_learning(initial_state, goal_state):
-    """Q-Learning algorithm"""
+def q_learning(initial_state, goal_state, alpha=0.1, gamma=0.9, epsilon_start=0.1, epsilon_decay=0.99, epsilon_min=0.01):
+    """Q-Learning algorithm with parameterized alpha, gamma, and epsilon."""
     q_table = {}
     actions = ['up', 'down', 'left', 'right']
 
     def get_state_key(state):
         return tuple(tuple(row) for row in state)
 
-    def get_action(state, epsilon=0.1):
+    def get_action(state, epsilon):
         state_key = get_state_key(state)
         if state_key not in q_table:
             q_table[state_key] = {a: 0.0 for a in actions}
@@ -22,7 +22,7 @@ def q_learning(initial_state, goal_state):
             return random.choice(actions)
         return max(q_table[state_key], key=q_table[state_key].get)
 
-    def update_q(state, action, reward, next_state, alpha=0.1, gamma=0.9):
+    def update_q(state, action, reward, next_state):
         state_key = get_state_key(state)
         next_state_key = get_state_key(next_state)
 
@@ -34,8 +34,8 @@ def q_learning(initial_state, goal_state):
         old_value = q_table[state_key][action]
         next_max = max(q_table[next_state_key].values())
 
-        new_value = old_value + alpha * (reward + gamma * next_max - old_value)
-        q_table[state_key][action] = new_value
+        # Q-Learning formula
+        q_table[state_key][action] = old_value + alpha * (reward + gamma * next_max - old_value)
 
     def get_reward(state):
         return 100 if state == goal_state else -1
@@ -61,7 +61,7 @@ def q_learning(initial_state, goal_state):
 
     for episode in range(episodes):
         state = [row[:] for row in initial_state]
-        epsilon = max(0.01, 0.1 * (0.99 ** episode))
+        epsilon = max(epsilon_min, epsilon_start * (epsilon_decay ** episode))
 
         for _ in range(max_steps):
             action = get_action(state, epsilon)
