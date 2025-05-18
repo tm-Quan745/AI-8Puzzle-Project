@@ -38,18 +38,25 @@ Nhóm thuật toán này tìm kiếm lời giải mà không sử dụng bất k
 
 *   **Hình ảnh GIF:**
     * BFS 
+    
     ![thuật toán BFS giải 8-Puzzle](gift/BFS.gif)
     
     * DFS 
+    
     ![thuật toán DFS giải 8-Puzzle](gift/BFS.gif)
     
     * IDDFS 
+    
     ![thuật toán IDDFS giải 8-Puzzle](gift/IDDFS.gif)
     
     * UCS 
+    
     ![thuật toán UCS giải 8-Puzzle](gift/UCS.gif)
 
-*   **So sánh hiệu suất:** (Bảng hoặc biểu đồ so sánh thời gian chạy, số bước, số node đã duyệt cho các bài toán mẫu)
+*   **So sánh hiệu suất:**
+    * Biểu đồ so sánh thời gian thực thi và số bước thực hiện của nhóm thuật toán Uninformed Search
+
+    ![Biểu đồ so sánh thời gian và số bước của nhóm thuật toán Uninformed Search trong 8-Puzzle](gift/uninfo.png)
 
 *   **Nhận xét:** Các thuật toán tìm kiếm mù hoạt động tốt với không gian tìm kiếm nhỏ. BFS và IDDFS đảm bảo tìm thấy lời giải tối ưu (ít bước nhất), trong khi DFS có thể tìm thấy lời giải nhanh hơn nhưng không đảm bảo tối ưu. Tuy nhiên, với các bài toán phức tạp hơn hoặc độ sâu lời giải lớn, bộ nhớ và thời gian của BFS/UCS có thể trở thành vấn đề.
 
@@ -63,17 +70,23 @@ Nhóm này sử dụng hàm heuristic (ước lượng chi phí từ trạng th�
     *   **Tìm kiếm IDA\* (IDA\* Search - Iterative Deepening A\*):** Phiên bản lặp sâu dần của A\*, giúp tiết kiệm bộ nhớ so với A\* tiêu chuẩn.
 
 *   **Hình ảnh GIF:**
+    
     * Greedy Best-First Search 
+    
     ![thuật toán GBFS giải 8-Puzzle](gift/GBFS.gif)
     
     * A* search 
+    
     ![thuật toán A* Search giải 8-Puzzle](gift/Astar.gif)
     
     * IDA* Search 
+    
     ![thuật toán IDA* Search giải 8-Puzzle](gift/IDA.gif)
 
-*   **So sánh hiệu suất:** (Bảng hoặc biểu đồ so sánh thời gian chạy, số bước, số node đã duyệt cho các bài toán mẫu)
+*   **So sánh hiệu suất:**
+    * Biểu đồ so sánh thời gian thực thi và số bước thực hiện của nhóm thuật toán Informed Search
 
+    ![Biểu đồ so sánh thời gian và số bước của nhóm thuật toán Informed trong 8-Puzzle](gift/infor.png)
 *   **Nhận xét:** Với heuristic tốt (ví dụ: Manhattan distance, Hamming distance), các thuật toán tìm kiếm có thông tin thường vượt trội hơn tìm kiếm mù về hiệu quả thời gian và số node duyệt, đặc biệt trên không gian tìm kiếm lớn. A\* và IDA\* là các thuật toán tìm kiếm có thông tin phổ biến và mạnh mẽ.
 
 ### 2.4. Các thuật toán Tìm kiếm Cục bộ (Local Search)
@@ -85,21 +98,30 @@ Nhóm này bắt đầu từ một (hoặc nhiều) trạng thái hiện tại v
 *   **Hình ảnh GIF:**
     
     * Hill Simple 
+    
     ![thuật toán Hill Simple giải 8-Puzzle](gift/HillSimple.gif)
     
     * Hill Steepest 
+    
     ![thuật toán DFS giải 8-Puzzle](gift/Steepest.gif)
     
     * Stochastic 
+    
     ![thuật toán Stochastic giải 8-Puzzle](gift/Stochastic.gif)
     
     * Simulateed Annealing 
+    
     ![thuật toán Annealing giải 8-Puzzle](gift/UCS.gif)
     
     * Beam Search 
+    
     ![thuật toán Beam Search giải 8-Puzzle](gift/Beam.gif)
     
-*   **So sánh hiệu suất:** (Bảng hoặc biểu đồ so sánh thời gian chạy, số bước, số node đã duyệt cho các bài toán mẫu)
+*   **So sánh hiệu suất:**
+    * Biểu đồ so sánh thời gian thực thi và số bước thực hiện của nhóm thuật toán Local Search
+    
+    ![Biểu đồ so sánh thời gian và số bước của nhóm thuật toán Local Search trong 8-Puzzle](gift/local.png)
+
 
 *   **Nhận xét:** Tìm kiếm cục bộ có ưu điểm về bộ nhớ. Hill Climbing có thể bị mắc kẹt tại cực tiểu cục bộ. Simulated Annealing và Stochastic Hill Climbing cố gắng thoát khỏi cực tiểu cục bộ bằng cách cho phép di chuyển "xấu" với xác suất nhất định. Beam Search giữ lại `k` trạng thái tốt nhất ở mỗi bước.
 
@@ -126,15 +148,21 @@ Giải các bài toán bằng cách tìm kiếm một trạng thái thỏa mãn 
 *   **Hình ảnh GIF:**
     
     * Backtracking 
+    
     ![thuật toán Backtracking giải 8-Puzzle](gift/Backtracking.gif)
     
     * Forward Checking 
+    
     ![thuật toán Forward Checking giải 8-Puzzle](gift/FowardTracking.gif)
     
     * AC-3 
+    
     ![thuật toán AC-3 giải 8-Puzzle](gift/IDDFS.gif)
 
-*   **So sánh hiệu suất:** (Bảng hoặc biểu đồ so sánh thời gian chạy, số bước, số node đã duyệt cho các bài toán mẫu)
+*   **So sánh hiệu suất:**
+    * Biểu đồ so sánh thời gian thực thi và số bước thực hiện của nhóm thuật toán Constraint Search
+    
+    ![Biểu đồ so sánh thời gian và số bước của nhóm thuật toán Constraint Search trong 8-Puzzle](gift/constrain.png)
 
 ### 2.7. Học tăng cường (Reinforcement Learning)
 
@@ -145,6 +173,7 @@ Học cách hành động trong một môi trường để tối đa hóa phần
 *   **Hình ảnh GIF:**
     
     * Q-learning 
+    
     ![thuật toán Q-learning giải 8-Puzzle]()
 
 *   **So sánh hiệu suất:** (Bảng hoặc biểu đồ so sánh thời gian chạy, số bước, số node đã duyệt cho các bài toán mẫu)
@@ -165,6 +194,6 @@ Thông qua dự án này, người dùng có thể trực tiếp trải nghiệm
 
 ---
 
-**Tác giả:** [Tên của bạn]
-**Ngày hoàn thành:** [Ngày hoàn thành dự án]
+**Tác giả:** [Trần Minh Quận]
+**Ngày hoàn thành:** [18-05-2025]
 **Công nghệ sử dụng:** Python, Tkinter, ...
